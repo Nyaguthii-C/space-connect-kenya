@@ -46,9 +46,6 @@ const Navbar = () => {
           <Link to="/organizers" className="text-foreground/80 hover:text-foreground transition-colors">
             Organizers
           </Link>
-          <Link to="/dashboard" className="text-foreground/80 hover:text-foreground transition-colors">
-            Organizer Portal
-          </Link>
         </div>
 
         <Button
@@ -124,13 +121,6 @@ const Navbar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Organizers
-            </Link>
-            <Link
-              to="/dashboard"
-              className="text-foreground block px-3 py-2 rounded-md hover:bg-secondary/50"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Organizer Portal
             </Link>
             <Button 
               className="w-full"
