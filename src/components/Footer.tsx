@@ -13,7 +13,7 @@ const Footer = () => {
                 <div className="absolute inset-1 bg-primary/50 rounded-full"></div>
                 <div className="absolute inset-2 bg-primary rounded-full"></div>
               </div>
-              <h3 className="font-bold text-xl">Anga Connect</h3>
+              <h3 className="font-bold text-xl">Space Events Kenya</h3>
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
               Connecting space education providers with learners and communities across Kenya.
@@ -52,7 +52,7 @@ const Footer = () => {
                 <Link to="/organizers" className="text-muted-foreground hover:text-primary">Organizers</Link>
               </li>
               <li>
-                <Link to="/dashboard" className="text-muted-foreground hover:text-primary">My Dashboard</Link>
+                <Link to="/dashboard" className="text-muted-foreground hover:text-primary">Dashboard</Link>
               </li>
             </ul>
           </div>
@@ -61,14 +61,14 @@ const Footer = () => {
             <h4 className="font-bold mb-4">Contact Us</h4>
             <address className="not-italic text-muted-foreground">
               <p className="mb-2">Nairobi, Kenya</p>
-              <p className="mb-2">Email: info@angaconnect.co.ke</p>
+              <p className="mb-2">Email: info@spaceeventskenya.co.ke</p>
               <p>Phone: +254 700 000 000</p>
             </address>
           </div>
         </div>
         
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Anga Connect Kenya. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Space Events Kenya. All rights reserved.</p>
         </div>
       </div>
     </footer>
