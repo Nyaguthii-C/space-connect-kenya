@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				space: {
+					'blue-dark': '#0a192f',
+					'blue': '#172a45',
+					'purple': '#8b5cf6',
+					'purple-light': '#a78bfa',
+					'yellow': '#f9c846',
+					'black': '#121212',
 				}
 			},
 			borderRadius: {
@@ -84,11 +93,32 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0)',
+					},
+					'50%': {
+						transform: 'translateY(-10px)',
+					},
+				},
+				'twinkle': {
+					'0%, 100%': {
+						opacity: '1',
+					},
+					'50%': {
+						opacity: '0.5',
+					},
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'twinkle': 'twinkle 4s ease-in-out infinite',
+			},
+			backgroundImage: {
+				'hero-pattern': "url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI5MDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0iIzFhMWEyZSIgZmlsbC1ydWxlPSJldmVub2RkIj48Y2lyY2xlIGZpbGw9IiMxYTFhMmUiIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PGNpcmNsZSBmaWxsPSIjMWExYTJlIiBjeD0iNzAiIGN5PSIzMCIgcj0iMSIvPjxjaXJjbGUgZmlsbD0iIzFhMWEyZSIgY3g9IjExMCIgY3k9IjMwIiByPSIxIi8+PGNpcmNsZSBmaWxsPSIjMWExYTJlIiBjeD0iMTUwIiBjeT0iMzAiIHI9IjEuNSIvPjxjaXJjbGUgZmlsbD0iIzFhMWEyZSIgY3g9IjE5MCIgY3k9IjMwIiByPSIxIi8+PGNpcmNsZSBmaWxsPSIjMWExYTJlIiBjeD0iMjMwIiBjeT0iMzAiIHI9IjIiLz48Y2lyY2xlIGZpbGw9IiMxYTFhMmUiIGN4PSIyNzAiIGN5PSIzMCIgcj0iMS41Ii8+PC9nPjwvc3ZnPg==')",
 			}
 		}
 	},
