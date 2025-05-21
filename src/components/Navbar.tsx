@@ -22,7 +22,7 @@ const Navbar = () => {
             <div className="absolute inset-1 bg-primary/50 rounded-full animate-pulse" style={{ animationDelay: "0.2s" }}></div>
             <div className="absolute inset-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: "0.4s" }}></div>
           </div>
-          <h1 className="text-xl font-bold text-gradient">Anga Connect</h1>
+          <h1 className="text-xl font-bold text-gradient">Space Events Kenya</h1>
         </Link>
 
         <div className="hidden md:flex items-center space-x-6">
@@ -47,10 +47,7 @@ const Navbar = () => {
             Organizers
           </Link>
           <Link to="/dashboard" className="text-foreground/80 hover:text-foreground transition-colors">
-            My Dashboard
-          </Link>
-          <Link to="/admin" className="text-foreground/80 hover:text-foreground transition-colors">
-            Admin
+            Organizer Portal
           </Link>
         </div>
 
@@ -133,14 +130,7 @@ const Navbar = () => {
               className="text-foreground block px-3 py-2 rounded-md hover:bg-secondary/50"
               onClick={() => setIsMenuOpen(false)}
             >
-              My Dashboard
-            </Link>
-            <Link
-              to="/admin"
-              className="text-foreground block px-3 py-2 rounded-md hover:bg-secondary/50"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Admin
+              Organizer Portal
             </Link>
             <Button 
               className="w-full"

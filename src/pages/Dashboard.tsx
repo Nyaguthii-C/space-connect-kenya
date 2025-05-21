@@ -35,9 +35,9 @@ const Dashboard = () => {
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">{loggedInOrganizer.name} Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-2">Organizer Portal</h1>
           <p className="text-muted-foreground">
-            Manage your space events and contacts with Anga Connect
+            Manage your space events and contacts with Space Events Kenya
           </p>
         </div>
         
