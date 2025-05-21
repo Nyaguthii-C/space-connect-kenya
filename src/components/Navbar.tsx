@@ -1,7 +1,6 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
@@ -47,14 +46,6 @@ const Navbar = () => {
             Organizers
           </Link>
         </div>
-
-        <Button
-          size="sm"
-          className="hidden md:flex gap-2"
-          onClick={() => window.dispatchEvent(new CustomEvent("open-registration-modal"))}
-        >
-          Add Your Event
-        </Button>
 
         <button
           className="md:hidden text-foreground p-2"
@@ -122,15 +113,6 @@ const Navbar = () => {
             >
               Organizers
             </Link>
-            <Button 
-              className="w-full"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent("open-registration-modal"));
-                setIsMenuOpen(false);
-              }}
-            >
-              Add Your Event
-            </Button>
           </div>
         </div>
       )}
