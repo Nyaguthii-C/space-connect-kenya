@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import MessageModal from "@/components/MessageModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,16 +18,39 @@ import {
 } from "@/components/ui/table";
 import { addContact, addEvent, organizers } from "@/lib/data";
 import { format } from "date-fns";
+import { Contact } from "@/lib/types";
+import { Send } from "lucide-react";
 
 // Mocking as if we're logged in as the first organizer for demo purposes
 const loggedInOrganizer = organizers[0];
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("events");
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [selectedContact, setSelectedContact] = useState<Contact | undefined>();
+  const [isBulkMessage, setIsBulkMessage] = useState(false);
   const { events, contacts } = loggedInOrganizer;
 
   const handleAddEvent = () => {
     window.dispatchEvent(new CustomEvent("open-registration-modal"));
+  };
+
+  const handleSendIndividualMessage = (contact: Contact) => {
+    setSelectedContact(contact);
+    setIsBulkMessage(false);
+    setIsMessageModalOpen(true);
+  };
+
+  const handleSendBulkMessage = () => {
+    setSelectedContact(undefined);
+    setIsBulkMessage(true);
+    setIsMessageModalOpen(true);
+  };
+
+  const handleCloseMessageModal = () => {
+    setIsMessageModalOpen(false);
+    setSelectedContact(undefined);
+    setIsBulkMessage(false);
   };
 
   return (
@@ -142,10 +166,20 @@ const Dashboard = () => {
           <TabsContent value="contacts">
             <Card>
               <CardHeader>
-                <CardTitle>Contacts</CardTitle>
-                <CardDescription>
-                  People who have registered interest in your events
-                </CardDescription>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <CardTitle>Contacts</CardTitle>
+                    <CardDescription>
+                      People who have registered interest in your events
+                    </CardDescription>
+                  </div>
+                  {contacts.length > 0 && (
+                    <Button onClick={handleSendBulkMessage} className="flex items-center gap-2">
+                      <Send size={16} />
+                      Send Bulk Message
+                    </Button>
+                  )}
+                </div>
               </CardHeader>
               <CardContent>
                 {contacts.length > 0 ? (
@@ -172,7 +206,13 @@ const Dashboard = () => {
                             <TableCell>{contact.email || "—"}</TableCell>
                             <TableCell>{format(new Date(contact.createdAt), "MMM d, yyyy")}</TableCell>
                             <TableCell className="text-right">
-                              <Button variant="outline" size="sm">
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => handleSendIndividualMessage(contact)}
+                                className="flex items-center gap-1"
+                              >
+                                <Send size={12} />
                                 Message
                               </Button>
                             </TableCell>
@@ -244,6 +284,14 @@ const Dashboard = () => {
       </main>
       
       <Footer />
+      
+      <MessageModal
+        isOpen={isMessageModalOpen}
+        onClose={handleCloseMessageModal}
+        contact={selectedContact}
+        contacts={isBulkMessage ? contacts : undefined}
+        isBulk={isBulkMessage}
+      />
     </div>
   );
 };

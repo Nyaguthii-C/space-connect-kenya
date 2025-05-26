@@ -1,4 +1,3 @@
-
 import { Contact, EventOrganizer, SpaceEvent } from "./types";
 
 const generateId = (): string => {
@@ -201,6 +200,58 @@ export const events: SpaceEvent[] = [
     createdAt: new Date("2023-12-15"),
   }
 ];
+
+// Add dummy contacts to the first organizer
+const dummyContacts: Contact[] = [
+  {
+    id: generateId(),
+    name: "John Kamau",
+    email: "john.kamau@gmail.com",
+    phone: "+254712345678",
+    message: "Interested in space workshops",
+    eventId: events[0]?.id || generateId(),
+    createdAt: new Date("2023-06-01"),
+  },
+  {
+    id: generateId(),
+    name: "Mary Wanjiku",
+    email: "mary.wanjiku@outlook.com",
+    phone: "+254723456789",
+    message: "Would like to attend astronomy events",
+    eventId: events[1]?.id || generateId(),
+    createdAt: new Date("2023-06-05"),
+  },
+  {
+    id: generateId(),
+    name: "David Ochieng",
+    email: "david.ochieng@yahoo.com",
+    phone: "+254734567890",
+    message: "Interested in satellite workshops",
+    eventId: events[2]?.id || generateId(),
+    createdAt: new Date("2023-06-10"),
+  },
+  {
+    id: generateId(),
+    name: "Grace Akinyi",
+    email: "grace.akinyi@gmail.com",
+    phone: "+254745678901",
+    message: "Looking for kids space programs",
+    eventId: events[3]?.id || generateId(),
+    createdAt: new Date("2023-06-15"),
+  },
+  {
+    id: generateId(),
+    name: "Peter Mwangi",
+    email: "peter.mwangi@hotmail.com",
+    phone: "+254756789012",
+    message: "Professional development in space tech",
+    eventId: events[4]?.id || generateId(),
+    createdAt: new Date("2023-06-20"),
+  }
+];
+
+// Add dummy contacts to the first organizer
+organizers[0].contacts = dummyContacts;
 
 // Link events to organizers
 events.forEach(event => {
