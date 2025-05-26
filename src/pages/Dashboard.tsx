@@ -1,8 +1,8 @@
-
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MessageModal from "@/components/MessageModal";
+import DashboardEventModal from "@/components/DashboardEventModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,10 +29,11 @@ const Dashboard = () => {
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<Contact | undefined>();
   const [isBulkMessage, setIsBulkMessage] = useState(false);
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const { events, contacts } = loggedInOrganizer;
 
   const handleAddEvent = () => {
-    window.dispatchEvent(new CustomEvent("open-registration-modal"));
+    setIsEventModalOpen(true);
   };
 
   const handleSendIndividualMessage = (contact: Contact) => {
@@ -291,6 +292,12 @@ const Dashboard = () => {
         contact={selectedContact}
         contacts={isBulkMessage ? contacts : undefined}
         isBulk={isBulkMessage}
+      />
+      
+      <DashboardEventModal
+        isOpen={isEventModalOpen}
+        onClose={() => setIsEventModalOpen(false)}
+        organizer={loggedInOrganizer}
       />
     </div>
   );
