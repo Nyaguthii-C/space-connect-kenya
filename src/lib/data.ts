@@ -1,4 +1,4 @@
-import { EventType, OrganizationType, SpaceEvent, EventOrganizer, Contact } from "./types";
+import { EventType, OrganizationType, SpaceEvent, EventOrganizer, Contact, AdminStats } from "./types";
 
 export const events: SpaceEvent[] = [
   {
@@ -236,4 +236,78 @@ export const addOrganizerContact = (contactData: {
   }
 
   return newContact;
+};
+
+export const addEvent = (eventData: Omit<SpaceEvent, 'id' | 'createdAt' | 'contacts' | 'organizer'>) => {
+  const newEvent: SpaceEvent = {
+    id: Date.now().toString(),
+    createdAt: new Date(),
+    contacts: [],
+    ...eventData,
+  };
+
+  events.push(newEvent);
+
+  // Add event to organizer's events list
+  const organizer = organizers.find(org => org.id === eventData.organizerId);
+  if (organizer) {
+    organizer.events.push(newEvent);
+  }
+
+  return newEvent;
+};
+
+export const addOrganizer = (organizerData: Omit<EventOrganizer, 'id' | 'createdAt' | 'events' | 'contacts'>) => {
+  const newOrganizer: EventOrganizer = {
+    id: Date.now().toString(),
+    createdAt: new Date(),
+    events: [],
+    contacts: [],
+    ...organizerData,
+  };
+
+  organizers.push(newOrganizer);
+  return newOrganizer;
+};
+
+export const getAdminStats = (): AdminStats => {
+  // Calculate event types
+  const eventsByType = events.reduce((acc, event) => {
+    acc[event.type] = (acc[event.type] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Calculate organizer types
+  const organizersByType = organizers.reduce((acc, organizer) => {
+    acc[organizer.type] = (acc[organizer.type] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Get total contacts across all events and organizers
+  const totalContacts = events.reduce((sum, event) => sum + event.contacts.length, 0) +
+                       organizers.reduce((sum, organizer) => sum + organizer.contacts.length, 0);
+
+  // Get recent events (last 10)
+  const recentEvents = events
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, 10)
+    .map(event => ({
+      ...event,
+      organizer: organizers.find(org => org.id === event.organizerId)
+    }));
+
+  // Get recent organizers (last 10)
+  const recentOrganizers = organizers
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, 10);
+
+  return {
+    totalEvents: events.length,
+    totalOrganizers: organizers.length,
+    totalContacts,
+    eventsByType,
+    organizersByType,
+    recentEvents,
+    recentOrganizers,
+  };
 };
