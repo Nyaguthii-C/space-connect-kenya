@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { SpaceEvent } from "@/lib/types";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
-import { addContact } from "@/lib/data";
+import { addContact, addOrganizerContact, getOrganizerById } from "@/lib/data";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,14 +28,22 @@ interface EventModalProps {
 const EventModal = ({ event, isOpen, onClose }: EventModalProps) => {
   const { toast } = useToast();
   const [showContactForm, setShowContactForm] = useState(false);
+  const [showOrganizerContactForm, setShowOrganizerContactForm] = useState(false);
   const [contactData, setContactData] = useState({
     name: "",
     email: "",
     phone: "",
     message: ""
   });
+  const [organizerContactData, setOrganizerContactData] = useState({
+    name: "",
+    phone: "",
+    message: ""
+  });
 
   if (!event) return null;
+
+  const organizer = getOrganizerById(event.organizerId);
 
   const handleSubmitContact = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,6 +77,40 @@ const EventModal = ({ event, isOpen, onClose }: EventModalProps) => {
     setShowContactForm(false);
   };
 
+  const handleSubmitOrganizerContact = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!organizerContactData.name || !organizerContactData.phone) {
+      toast({
+        title: "Error",
+        description: "Name and phone number are required",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    addOrganizerContact({
+      name: organizerContactData.name,
+      phone: organizerContactData.phone,
+      message: organizerContactData.message,
+      eventId: event.id,
+      organizerId: event.organizerId,
+    });
+    
+    toast({
+      title: "Message Sent!",
+      description: `Your message has been sent to ${organizer?.name}`,
+    });
+    
+    setOrganizerContactData({
+      name: "",
+      phone: "",
+      message: ""
+    });
+    
+    setShowOrganizerContactForm(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -87,7 +129,7 @@ const EventModal = ({ event, isOpen, onClose }: EventModalProps) => {
         <DialogHeader>
           <DialogTitle className="text-2xl">{event.title}</DialogTitle>
           <DialogDescription>
-            Organized by {event.organizer?.name}
+            Organized by {organizer?.name}
           </DialogDescription>
         </DialogHeader>
         
@@ -189,10 +231,62 @@ const EventModal = ({ event, isOpen, onClose }: EventModalProps) => {
               </form>
             </div>
           )}
+
+          {showOrganizerContactForm && (
+            <div className="bg-card border border-border p-4 rounded-lg">
+              <h4 className="font-medium mb-3">Contact Organizer</h4>
+              <p className="text-sm text-muted-foreground mb-3">
+                Send a message to {organizer?.name} about "{event.title}"
+              </p>
+              <form onSubmit={handleSubmitOrganizerContact} className="space-y-3">
+                <div className="grid gap-2">
+                  <Label htmlFor="organizerContactName">Your Name *</Label>
+                  <Input 
+                    id="organizerContactName" 
+                    value={organizerContactData.name}
+                    onChange={e => setOrganizerContactData({...organizerContactData, name: e.target.value})}
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="organizerContactPhone">Phone Number *</Label>
+                  <Input 
+                    id="organizerContactPhone" 
+                    value={organizerContactData.phone}
+                    onChange={e => setOrganizerContactData({...organizerContactData, phone: e.target.value})}
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="organizerContactMessage">Message *</Label>
+                  <Textarea
+                    id="organizerContactMessage"
+                    rows={4}
+                    value={organizerContactData.message}
+                    onChange={e => setOrganizerContactData({...organizerContactData, message: e.target.value})}
+                    placeholder="Write your message to the organizer..."
+                    required
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="submit" className="flex-1">Send Message</Button>
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setShowOrganizerContactForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            </div>
+          )}
         </div>
         
         <DialogFooter className="flex flex-col sm:flex-row gap-2">
-          {!showContactForm && (
+          {!showContactForm && !showOrganizerContactForm && (
             <>
               <Button 
                 className="w-full sm:flex-1" 
@@ -200,15 +294,13 @@ const EventModal = ({ event, isOpen, onClose }: EventModalProps) => {
               >
                 Register Interest
               </Button>
-              {event.organizer?.phone && (
-                <Button 
-                  variant="outline" 
-                  className="w-full sm:w-auto"
-                  onClick={() => window.open(`tel:${event.organizer?.phone}`)}
-                >
-                  Contact Organizer
-                </Button>
-              )}
+              <Button 
+                variant="outline" 
+                className="w-full sm:flex-1"
+                onClick={() => setShowOrganizerContactForm(true)}
+              >
+                Contact Organizer
+              </Button>
             </>
           )}
         </DialogFooter>
