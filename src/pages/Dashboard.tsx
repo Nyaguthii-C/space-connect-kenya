@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MessageModal from "@/components/MessageModal";
 import DashboardEventModal from "@/components/DashboardEventModal";
+import EventContactsSection from "@/components/EventContactsSection";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -16,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { addContact, addEvent, organizers } from "@/lib/data";
+import { organizers } from "@/lib/data";
 import { format } from "date-fns";
 import { Contact } from "@/lib/types";
 import { Send } from "lucide-react";
@@ -28,7 +29,9 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("events");
   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
   const [selectedContact, setSelectedContact] = useState<Contact | undefined>();
+  const [selectedContacts, setSelectedContacts] = useState<Contact[]>([]);
   const [isBulkMessage, setIsBulkMessage] = useState(false);
+  const [eventTitle, setEventTitle] = useState<string>("");
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const { events, contacts } = loggedInOrganizer;
 
@@ -38,12 +41,24 @@ const Dashboard = () => {
 
   const handleSendIndividualMessage = (contact: Contact) => {
     setSelectedContact(contact);
+    setSelectedContacts([]);
     setIsBulkMessage(false);
+    setEventTitle("");
     setIsMessageModalOpen(true);
   };
 
-  const handleSendBulkMessage = () => {
+  const handleSendBulkMessage = (contactsToMessage: Contact[], eventTitleForMessage: string) => {
     setSelectedContact(undefined);
+    setSelectedContacts(contactsToMessage);
+    setEventTitle(eventTitleForMessage);
+    setIsBulkMessage(true);
+    setIsMessageModalOpen(true);
+  };
+
+  const handleSendAllContactsBulkMessage = () => {
+    setSelectedContact(undefined);
+    setSelectedContacts(contacts);
+    setEventTitle("");
     setIsBulkMessage(true);
     setIsMessageModalOpen(true);
   };
@@ -51,7 +66,9 @@ const Dashboard = () => {
   const handleCloseMessageModal = () => {
     setIsMessageModalOpen(false);
     setSelectedContact(undefined);
+    setSelectedContacts([]);
     setIsBulkMessage(false);
+    setEventTitle("");
   };
 
   return (
@@ -110,6 +127,8 @@ const Dashboard = () => {
           <TabsList className="mb-6">
             <TabsTrigger value="events">My Events</TabsTrigger>
             <TabsTrigger value="contacts">Contacts</TabsTrigger>
+            <TabsTrigger value="event-contacts">Event Contacts</TabsTrigger>
+            <TabsTrigger value="organizer-messages">Messages</TabsTrigger>
             <TabsTrigger value="profile">Profile</TabsTrigger>
           </TabsList>
           
@@ -169,13 +188,13 @@ const Dashboard = () => {
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <div>
-                    <CardTitle>Contacts</CardTitle>
+                    <CardTitle>All Contacts</CardTitle>
                     <CardDescription>
-                      People who have registered interest in your events
+                      All people who have registered interest in your events
                     </CardDescription>
                   </div>
                   {contacts.length > 0 && (
-                    <Button onClick={handleSendBulkMessage} className="flex items-center gap-2">
+                    <Button onClick={handleSendAllContactsBulkMessage} className="flex items-center gap-2">
                       <Send size={16} />
                       Send Bulk Message
                     </Button>
@@ -227,6 +246,33 @@ const Dashboard = () => {
                     <p className="text-muted-foreground">No contacts yet</p>
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="event-contacts">
+            <EventContactsSection
+              events={events}
+              onSendIndividualMessage={handleSendIndividualMessage}
+              onSendBulkMessage={handleSendBulkMessage}
+            />
+          </TabsContent>
+          
+          <TabsContent value="organizer-messages">
+            <Card>
+              <CardHeader>
+                <CardTitle>Messages from Users</CardTitle>
+                <CardDescription>
+                  Messages sent to you through the "Contact Organizer" feature
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">No messages yet</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Users can contact you through the "Contact Organizer" button on your events
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -290,8 +336,9 @@ const Dashboard = () => {
         isOpen={isMessageModalOpen}
         onClose={handleCloseMessageModal}
         contact={selectedContact}
-        contacts={isBulkMessage ? contacts : undefined}
+        contacts={selectedContacts.length > 0 ? selectedContacts : undefined}
         isBulk={isBulkMessage}
+        eventTitle={eventTitle}
       />
       
       <DashboardEventModal

@@ -13,9 +13,10 @@ interface MessageModalProps {
   contact?: Contact;
   contacts?: Contact[];
   isBulk?: boolean;
+  eventTitle?: string;
 }
 
-const MessageModal = ({ isOpen, onClose, contact, contacts, isBulk = false }: MessageModalProps) => {
+const MessageModal = ({ isOpen, onClose, contact, contacts, isBulk = false, eventTitle }: MessageModalProps) => {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -37,7 +38,7 @@ const MessageModal = ({ isOpen, onClose, contact, contacts, isBulk = false }: Me
       if (isBulk && contacts) {
         toast({
           title: "Messages Sent!",
-          description: `Bulk message sent to ${contacts.length} contacts successfully.`,
+          description: `Bulk message sent to ${contacts.length} contacts${eventTitle ? ` for "${eventTitle}"` : ''} successfully.`,
         });
       } else if (contact) {
         toast({
@@ -53,13 +54,15 @@ const MessageModal = ({ isOpen, onClose, contact, contacts, isBulk = false }: Me
   };
 
   const getTitle = () => {
-    if (isBulk) return "Send Bulk Message";
+    if (isBulk) {
+      return eventTitle ? `Send Bulk Message - ${eventTitle}` : "Send Bulk Message";
+    }
     return contact ? `Send Message to ${contact.name}` : "Send Message";
   };
 
   const getDescription = () => {
     if (isBulk && contacts) {
-      return `Send a message to all ${contacts.length} contacts`;
+      return `Send a message to all ${contacts.length} contacts${eventTitle ? ` for "${eventTitle}"` : ''}`;
     }
     return contact ? `Send a direct message to ${contact.name} (${contact.phone})` : "";
   };

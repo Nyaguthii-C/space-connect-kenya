@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SpaceEvent } from "@/lib/types";
-import { Calendar } from "lucide-react";
+import { Calendar, MessageSquare } from "lucide-react";
 import { format } from "date-fns";
+import ContactOrganizerModal from "./ContactOrganizerModal";
 
 interface EventCardProps {
   event: SpaceEvent;
@@ -20,6 +22,7 @@ interface EventCardProps {
 
 const EventCard = ({ event, onViewDetails }: EventCardProps) => {
   const { id, title, description, type, imageUrl, location, date, organizer } = event;
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const formattedDate = format(new Date(date), "MMM d, yyyy");
   
@@ -29,57 +32,74 @@ const EventCard = ({ event, onViewDetails }: EventCardProps) => {
     : description;
 
   return (
-    <Card className="h-full overflow-hidden hover:border-primary/50 transition-all duration-300 bg-card">
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={imageUrl || "https://images.unsplash.com/photo-1541873676-a18131494184?q=80&w=1000&auto=format&fit=crop"}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-        />
-        <Badge 
-          className="absolute top-2 right-2" 
-          variant={type === "workshop" ? "default" : 
-                 type === "seminar" ? "secondary" : 
-                 type === "exhibition" ? "outline" : 
-                 type === "competition" ? "destructive" : "default"}
-        >
-          {type.charAt(0).toUpperCase() + type.slice(1)}
-        </Badge>
-      </div>
-      
-      <CardHeader className="p-4 pb-0">
-        <div className="flex items-center gap-2 mb-2">
-          <Calendar className="h-4 w-4 text-muted-foreground" />
-          <CardDescription>{formattedDate}</CardDescription>
-        </div>
-        <CardTitle className="line-clamp-1">{title}</CardTitle>
-      </CardHeader>
-      
-      <CardContent className="p-4 pt-2">
-        <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
-          {truncatedDescription}
-        </p>
-        <div className="flex items-start gap-2 mt-4">
-          <div 
-            className="w-6 h-6 rounded-full overflow-hidden bg-primary/20 flex-shrink-0"
-            style={{ backgroundImage: organizer?.logoUrl ? `url(${organizer.logoUrl})` : 'none', backgroundSize: 'cover' }}
+    <>
+      <Card className="h-full overflow-hidden hover:border-primary/50 transition-all duration-300 bg-card">
+        <div className="relative h-48 overflow-hidden">
+          <img
+            src={imageUrl || "https://images.unsplash.com/photo-1541873676-a18131494184?q=80&w=1000&auto=format&fit=crop"}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
           />
-          <p className="text-xs text-foreground/70 line-clamp-1">
-            {organizer?.name || "Unknown Organizer"} • {location}
-          </p>
+          <Badge 
+            className="absolute top-2 right-2" 
+            variant={type === "workshop" ? "default" : 
+                   type === "seminar" ? "secondary" : 
+                   type === "exhibition" ? "outline" : 
+                   type === "competition" ? "destructive" : "default"}
+          >
+            {type.charAt(0).toUpperCase() + type.slice(1)}
+          </Badge>
         </div>
-      </CardContent>
+        
+        <CardHeader className="p-4 pb-0">
+          <div className="flex items-center gap-2 mb-2">
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <CardDescription>{formattedDate}</CardDescription>
+          </div>
+          <CardTitle className="line-clamp-1">{title}</CardTitle>
+        </CardHeader>
+        
+        <CardContent className="p-4 pt-2">
+          <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
+            {truncatedDescription}
+          </p>
+          <div className="flex items-start gap-2 mt-4">
+            <div 
+              className="w-6 h-6 rounded-full overflow-hidden bg-primary/20 flex-shrink-0"
+              style={{ backgroundImage: organizer?.logoUrl ? `url(${organizer.logoUrl})` : 'none', backgroundSize: 'cover' }}
+            />
+            <p className="text-xs text-foreground/70 line-clamp-1">
+              {organizer?.name || "Unknown Organizer"} • {location}
+            </p>
+          </div>
+        </CardContent>
+        
+        <CardFooter className="p-4 pt-0 flex gap-2">
+          <Button 
+            className="flex-1" 
+            variant="secondary"
+            onClick={() => onViewDetails(id)}
+          >
+            View Details
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => setIsContactModalOpen(true)}
+            className="flex items-center gap-1"
+          >
+            <MessageSquare size={14} />
+            Contact
+          </Button>
+        </CardFooter>
+      </Card>
       
-      <CardFooter className="p-4 pt-0">
-        <Button 
-          className="w-full" 
-          variant="secondary"
-          onClick={() => onViewDetails(id)}
-        >
-          View Details
-        </Button>
-      </CardFooter>
-    </Card>
+      <ContactOrganizerModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+        event={event}
+      />
+    </>
   );
 };
 
