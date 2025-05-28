@@ -28,6 +28,7 @@ export interface EventOrganizer {
 
 export interface SpaceEvent {
   id: string;
+  name: string;
   title: string;
   description: string;
   type: EventType;
