@@ -28,13 +28,22 @@ const EventCard = ({ event, onViewDetails }: EventCardProps) => {
     ? `${description.substring(0, 120)}...`
     : description;
 
+  const defaultImage = "https://images.unsplash.com/photo-1541873676-a18131494184?q=80&w=1000&auto=format&fit=crop";
+
   return (
     <Card className="h-full overflow-hidden hover:border-primary/50 transition-all duration-300 bg-card">
       <div className="relative h-48 overflow-hidden">
         <img
-          src={imageUrl || "https://images.unsplash.com/photo-1541873676-a18131494184?q=80&w=1000&auto=format&fit=crop"}
+          src={imageUrl || defaultImage}
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== defaultImage) {
+              target.src = defaultImage;
+            }
+          }}
+          loading="lazy"
         />
         <Badge 
           className="absolute top-2 right-2" 

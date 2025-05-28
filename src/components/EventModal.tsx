@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -44,6 +43,7 @@ const EventModal = ({ event, isOpen, onClose }: EventModalProps) => {
   if (!event) return null;
 
   const organizer = getOrganizerById(event.organizerId);
+  const defaultImage = "https://images.unsplash.com/photo-1541873676-a18131494184?q=80&w=1000&auto=format&fit=crop";
 
   const handleSubmitContact = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,9 +116,16 @@ const EventModal = ({ event, isOpen, onClose }: EventModalProps) => {
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="relative w-full h-56 overflow-hidden -mt-6 -mx-6 mb-4 rounded-t-lg">
           <img
-            src={event.imageUrl || "https://images.unsplash.com/photo-1541873676-a18131494184?q=80&w=1000&auto=format&fit=crop"}
+            src={event.imageUrl || defaultImage}
             alt={event.title}
             className="w-full h-full object-cover"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (target.src !== defaultImage) {
+                target.src = defaultImage;
+              }
+            }}
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
           <div className="absolute top-4 right-4">
