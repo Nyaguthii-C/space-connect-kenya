@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { SpaceEvent } from "@/lib/types";
+import { addOrganizerContact } from "@/lib/data";
 
 interface ContactOrganizerModalProps {
   isOpen: boolean;
@@ -44,18 +45,24 @@ const ContactOrganizerModal = ({ isOpen, onClose, event }: ContactOrganizerModal
     setLoading(true);
     
     try {
-      // Simulate sending message to organizer
-      setTimeout(() => {
-        toast({
-          title: "Message Sent!",
-          description: `Your message has been sent to ${event.organizer?.name}`,
-          duration: 5000,
-        });
-        
-        resetForm();
-        onClose();
-        setLoading(false);
-      }, 1000);
+      // Add contact to organizer's contact list
+      addOrganizerContact({
+        name: formData.name,
+        phone: formData.phone,
+        message: formData.message,
+        eventId: event.id,
+        organizerId: event.organizerId,
+      });
+      
+      toast({
+        title: "Message Sent!",
+        description: `Your message has been sent to ${event.organizer?.name}`,
+        duration: 5000,
+      });
+      
+      resetForm();
+      onClose();
+      setLoading(false);
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
