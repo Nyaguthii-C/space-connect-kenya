@@ -3,6 +3,7 @@ import { EventType, OrganizationType, SpaceEvent, EventOrganizer, Contact, Admin
 export const events: SpaceEvent[] = [
   {
     id: "1",
+    name: "Kenya Space Agency",
     title: "Space Exploration Workshop",
     description: "A hands-on workshop exploring the wonders of space.",
     type: "workshop",
@@ -18,6 +19,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "2",
+    name: "Martians",
     title: "Astronomy Night",
     description: "An evening of stargazing and learning about constellations.",
     type: "seminar",
@@ -33,6 +35,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "3",
+    name: "Rocket Society of Kenya",
     title: "Rocketry Competition",
     description: "A competition where teams design and launch their own rockets.",
     type: "competition",
@@ -48,6 +51,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "4",
+    name: "AstroTechies",
     title: "Space Technology Exhibition",
     description: "An exhibition showcasing the latest advancements in space technology.",
     type: "exhibition",
@@ -63,6 +67,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "5",
+    name: "SpaceSat Kenya",
     title: "Satellite Data Analysis Training",
     description: "A training program on analyzing satellite data for environmental monitoring.",
     type: "training",
@@ -70,7 +75,7 @@ export const events: SpaceEvent[] = [
     location: "University of Nairobi",
     date: new Date("2024-07-01T09:00:00"),
     organizerId: "2",
-    cost: "KES 1000",
+    cost: "Free",
     targetAudience: "Researchers and Scientists",
     capacity: 30,
     contacts: [],
@@ -78,6 +83,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "6",
+    name: "Mars Society of Kenya",
     title: "Mars Rover Design Challenge",
     description: "Design and build a Mars rover prototype.",
     type: "competition",
@@ -93,6 +99,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "7",
+    name: "Satlyt Africa LTD",
     title: "Space Law Seminar",
     description: "A seminar on the legal aspects of space exploration and resource utilization.",
     type: "seminar",
@@ -108,6 +115,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "8",
+    name: "Astro Educators Kenya",
     title: "Cosmic Photography Workshop",
     description: "Learn how to capture stunning images of the night sky.",
     type: "workshop",
@@ -123,6 +131,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "9",
+    name: "Space Club Nairobi",
     title: "International Space Station Talk",
     description: "A talk about the current research and life aboard the ISS.",
     type: "seminar",
@@ -138,6 +147,7 @@ export const events: SpaceEvent[] = [
   },
   {
     id: "10",
+    name: "Aerospace Solutions",
     title: "Space Habitat Design Competition",
     description: "Design a sustainable habitat for future space settlements.",
     type: "competition",

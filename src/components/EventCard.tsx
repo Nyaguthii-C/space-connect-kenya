@@ -19,7 +19,7 @@ interface EventCardProps {
 }
 
 const EventCard = ({ event, onViewDetails }: EventCardProps) => {
-  const { id, title, description, type, imageUrl, location, date, organizer } = event;
+  const { id, name, title, description, type, imageUrl, location, date, organizer } = event;
 
   const formattedDate = format(new Date(date), "MMM d, yyyy");
   
@@ -74,7 +74,7 @@ const EventCard = ({ event, onViewDetails }: EventCardProps) => {
             style={{ backgroundImage: organizer?.logoUrl ? `url(${organizer.logoUrl})` : 'none', backgroundSize: 'cover' }}
           />
           <p className="text-xs text-foreground/70 line-clamp-1">
-            {organizer?.name || "Unknown Organizer"} • {location}
+            {name || "Unknown Organizer"} • {location}
           </p>
         </div>
       </CardContent>
