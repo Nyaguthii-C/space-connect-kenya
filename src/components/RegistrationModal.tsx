@@ -120,6 +120,7 @@ const RegistrationModal = () => {
           type: eventData.type as any,
           imageUrl: eventData.imageUrl,
           location: eventData.location,
+          name: newOrganizer.name,
           date: dateObj,
           endDate: endDateObj,
           organizerId: newOrganizer.id,
@@ -168,7 +169,7 @@ const RegistrationModal = () => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-2xl">Register with Anga Connect</DialogTitle>
+          <DialogTitle className="text-2xl">Register with Space</DialogTitle>
           <DialogDescription>
             Share your space events and services with the Kenyan community
           </DialogDescription>

@@ -38,16 +38,13 @@ const Hero = () => {
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             <span className="text-gradient">Discover Space</span> Activities and Events in Kenya
           </h1>
-          
-          <p className="text-xl md:text-2xl mb-8 text-foreground/80">
-            Connect with space education providers and explore the wonders of the cosmos
-          </p>
+          <p className="text-xl md:text-2xl mb-8 text-foreground/80">Space Connect Kenya is a platform that lists space-related events, educational activities, and community programs across Kenya, including talks, workshops, exhibitions, and training opportunities.</p>
           
           <form onSubmit={handleSearch} className="max-w-lg mx-auto mb-8 relative">
             <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="Find space activities near you..."
+              placeholder="Find space events near you..."
               className="pl-10 pr-24 py-6 text-lg"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
